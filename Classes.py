@@ -983,13 +983,14 @@ class TwoPartyQKD:
 	
 	def QBER_estimate(self,minmax=1E-9, Possonian=True, preciseness=10000):
 		Sig, Err_with_pos = self.FourFold_full(minmax=minmax,Possonian=Possonian, preciseness=preciseness)
+		Npos = self.FourFold_possonian()
 		NnoiatQR = self.FourFold_trueAB_falseQR(minmax=minmax, Possonian=Possonian, preciseness=preciseness)
 		Nacc_true = self.FourFold_accidentals_falseswap()
 		Nacc_false = self.FourFold_accidentals_trueswap()
 		
 		Err = NnoiatQR+Nacc_true+Nacc_false
 		
-		QBER = Err/(Sig+Err_with_pos)
+		QBER = Err/(Sig-Npos)
 		
 		return QBER
 		
